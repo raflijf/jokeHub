@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "tailwind-scrollbar": "^4.0.1",
+    "typewriter-effect": "^2.21.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.0.4"
+  }
+}

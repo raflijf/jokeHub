@@ -1,0 +1,44 @@
+{% extends "landing.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block head %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+{% endblock head %}
+
+{% block body %}
+    <section class="h-[100vh] w-[100%] grid place-items-center">
+        <form method="POST" class="p-6 text-primary-navyblue" id="myForm">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} flex justify-between" id="alert">           
+                        {{ message }}
+                            <svg id="close-alert" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#198754" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_email" class="form-label font-semibold">Email</label>
+                {{ form.email }}
+                <li class="alert-input text-danger text-sm hidden" id="alert-email">Email tidak valid!</li>
+              </div>
+              <div class="mb-3">
+                <label for="id_pesan" class="form-label font-semibold" >Pesan </label>
+                {{ form.pesan|add_class:"resize-none text-primary-vibrantGreen" }}
+                <li class="alert-input text-danger text-sm hidden" id="alert-message">Pesan tidak valid!</li>
+              </div>
+              <button class="btn btn-success w-100 " id="submit" type="submit">Kirim</button>
+              
+        </form>
+    </section>
+{% endblock body %}
+
+{% block end_body %}
+    <script src="{% static 'landing/js/contact.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock end_body %}
+
+
+

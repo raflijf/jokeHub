@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href={% static "img/jokehub2-logo.png" %}>
+    <title>{{ title }}</title>
+    <link href="{% static 'css/dist/styles.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    {% block head %}
+    {% endblock head %}
+</head>
+<body class="font-poppins ">
+    <nav id="nav" class="fixed top-0 w-full bg-white transition-shadow z-50">
+        <div class="max-w-6xl mx-auto px-4 flex items-center justify-between py-4">
+            <div class="logo">
+                <img src={% static "img/jokehub2-logo.png" %} alt="Logo" class="w-24">
+            </div>
+            <ul class="hidden md:flex space-x-8 text-gray-800">
+                <li><a href="{% url "landing:home" %}" class="hover:text-primary-vibrantGreen transition decoration-primary-vibrantGreen hover:underline text-primary-navyblue no-underline">Beranda</a></li>
+                <li><a href="{% url "landing:about" %}" class="hover:text-primary-vibrantGreen transition decoration-primary-vibrantGreen hover:underline  text-primary-navyblue no-underline">Tentang kami</a></li>
+                <li><a href="{% url "landing:contact" %}" class="hover:text-primary-vibrantGreen transition decoration-primary-vibrantGreen hover:underline  text-primary-navyblue no-underline">Kontak</a></li>
+            </ul>
+            <div class="hidden md:flex space-x-4">
+                <button class="border border-green-500 text-green-500 px-4 py-2 rounded hover:bg-green-50 transition"><a href="{% url 'accounts:signin' %}"  class="text-primary-vibrantGreen no-underline" >Sign in</a></button>
+                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"><a href="{% url 'accounts:signup' %}"  class="text-white no-underline" >Sign up</a></button>
+            </div>
+            <button class="hamburger md:hidden text-2xl">&#9776;</button>
+        </div>
+        <div class="mobile-menu hidden absolute top-full left-0 w-full bg-white shadow-md md:hidden">
+            <ul class="space-y-4 p-4">
+                <li><a href="{% url "landing:home" %}" class="hover:text-primary-vibrantGreen transition decoration-primary-vibrantGreen hover:underline text-primary-navyblue no-underline">Beranda</a></li>
+                <li><a href="{% url "landing:about" %}" class="hover:text-primary-vibrantGreen transition decoration-primary-vibrantGreen hover:underline  text-primary-navyblue no-underline">Tentang kami</a></li>
+                <li><a href="{% url "landing:contact" %}" class="hover:text-primary-vibrantGreen transition decoration-primary-vibrantGreen hover:underline  text-primary-navyblue no-underline">Kontak</a></li>
+            </ul>
+            <div class="space-y-2 border-t border-gray-200 p-4 pt-4">
+                <button class="w-full border border-green-500 text-green-500 px-4 py-2 rounded hover:bg-green-50 transition "><a href="{% url 'accounts:signin' %}"  class="text-primary-vibrantGreen no-underline" >Sign in</a></button>
+                <button class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"><a href="{% url 'accounts:signup' %}"  class="text-white no-underline" >Sign up</a></button>
+            </div>
+        </div>
+    </nav>
+
+    {% block body %}
+        <section class="h-[100vh]"></section>
+    {% endblock body %}
+    <footer class="bg-primary-navyblue text-white py-8 px-6 relative top-20">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+            <div>
+                <h3 class="font-bold text-lg mb-2 text-left">Tentang kami</h3>
+                <p class="text-sm text-gray-300 text-left">
+                    JokeHub, yang lahir dari gabut, hadir buat nyebarin tawa lewat lelucon ringan dan humor konyol!
+                </p>
+            </div>
+            <div class="flex justify-start ">
+                <ul class="space-y-1">
+                    <h3 class="font-bold text-lg mb-2 text-left">Tautan</h3>
+                    <li class="flex justify-start"><a href="{% url "landing:home" %}" class="transition text-white hover:underline  no-underline">Beranda</a></li>
+                    <li class="flex justify-start"><a href="{% url "landing:about" %}" class="transition  text-white  hover:underline   no-underline">Tentang kami</a></li>
+                    <li class="flex justify-start"><a href="{% url "landing:contact" %}" class="transition text-white   hover:underline   no-underline">Kontak</a></li>
+                </ul>
+            </div>
+            <div class="flex justify-start">
+                <ul class="space-y-1">
+                    <h3 class="font-bold text-lg mb-2 text-left">Ikuti kami</h3>
+                    <li class="flex justify-start"><a href="#" class="hover:underline text-white no-underline ">Instagram</a></li>
+                    <li class="flex justify-start"><a href="#" class="hover:underline text-white no-underline ">Tiktok</a></li>
+                    <li class="flex justify-start"><a href="#" class="hover:underline text-white no-underline ">Threads</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    
+<script src="{% static "js/landing.js" %}"></script>
+{% block end_body %}
+{% endblock end_body %}
+</body>
+</html>

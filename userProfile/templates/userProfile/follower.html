@@ -1,0 +1,135 @@
+{% extends "hubspace.html" %}
+{% load static %}
+
+{% block body %}
+    <section class="flex justify-center relative top-4">
+        <div class="bg-white shadow-custom-y w-[95%] h-[80vh]  rounded-lg p-5">
+            <div class="pb-6 flex justify-between items-center">
+                <a href="{% url "user_profile:profil"  viewed_user.uuid %}" class="flex items-center gap-3">
+                    <img src="{{ viewed_user.profile_image.url }}" alt="" class="h-16 w-16 rounded-full">
+                    <span class="text-xl">{{ viewed_user.username }}</span>
+                </a>
+                {% comment %} <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="2A3D66"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                </div> {% endcomment %}
+            </div>
+            <div class="flex justify-center h-[75%] ">
+                <div class="w-full  lg:w-[70%]   ">
+                    <div class="flex justify-between gap-5">
+                        <a href="{% url "user_profile:follower_view" viewed_user.uuid %}" class=" w-full text-center h-7 flex items-center justify-center border-2 border-primary-navyblue text-primary-navyblue rounded-lg font-medium 
+                            {% if title == 'Pengikut' %}
+                                bg-primary-navyblue/25
+                            {% endif %}
+                        ">Pengikut</a>
+                        <a href="{% url "user_profile:following_view" viewed_user.uuid %}" class="w-full text-center h-7 flex items-center justify-center border-2 border-primary-navyblue text-primary-navyblue rounded-lg font-medium 
+                            {% if title == 'Mengikuti' %}
+                                bg-primary-navyblue/25
+                            {% endif %}
+                        ">Mengikuti</a>
+                    </div>
+                    <div class="p-3  h-full overflow-y-scroll scrollbar-none">
+                        {% block list_follower_and_following %}
+                            {% for follower in followers %}
+                                <div class="follower justify-between items-center grid  md:flex hover:bg-slate-100">
+                                    <a href="{% url "user_profile:profil" follower.follower.uuid %}" class="flex items-center gap-4">
+                                        <img src="{{ follower.follower.profile_image.url }}" alt="" class="h-10 w-10 rounded-full">
+                                        <span
+                                            {% if not is_own_user and user == follower.follower %}
+                                                class="text-primary-vibrantGreen"
+                                            {% endif %}
+                                        >{{ follower.follower.username }}</span>
+                                    </a>
+                                    <div class=" h-14 flex  gap-5 ">
+                                        {% if is_own_user %}
+                                            {% if not follower.follower.id in followings_id %}
+                                                <form action="{% url "user_profile:follback" follower.follower.id %}"  class="follbackButton h-14  flex items-center">
+                                                    {% csrf_token %}
+                                                    <button class=" w-auto  px-3 py-[3px] text-[11px] rounded-md  bg-[#3F51B5]/80 text-white hover:bg-[#3F51B5] hover:text-white font-normal duration-200">Ikuti balik</button>
+                                                </form>                                                                                
+                                            {% endif %}
+                                            <form action="{% url "user_profile:delete_follower" follower.follower.id %}"  class="deleteFollower h-14  flex items-center">
+                                                {% csrf_token %}
+                                                <button class=" w-auto  px-3 py-[2px] text-[11px] border-red-600 border-2  rounded-md  text-red-600 hover:bg-red-600 hover:text-white font-normal duration-200">Hapus pengikut</button>
+                                            </form>
+                                        {% endif %}
+                                    </div>                                    
+                                </div>                            
+                            {% endfor %}
+                        {% endblock list_follower_and_following %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock body %}
+
+{% block end_body %}
+    <script>
+        document.querySelectorAll('.follbackButton')
+            .forEach(item => {
+                item.addEventListener('submit',async function (event) {
+                    event.preventDefault()
+                    console.log(this.action)
+                    try {
+                        await fetch(this.action, {
+                            method : 'POST',
+                            body : new FormData(this)
+                        })
+                        this.remove()
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
+            })
+
+            document.querySelectorAll('.follower')
+            .forEach(item => {
+                const delelteButton = item.querySelector('.deleteFollower')
+                delelteButton.addEventListener('submit',async function (event) {
+                    event.preventDefault()
+                    console.log(item)
+                    try  {
+                        const response = await fetch(this.action, {
+                            method : 'POST',
+                            body : new FormData(this)
+                        })  
+                        item.remove()
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
+            })
+
+            document.querySelectorAll('.following')
+            .forEach(item => {
+                const delelteButtonFollowing = item.querySelector('.following form')
+                delelteButtonFollowing.addEventListener('submit',async function (event) {
+                    event.preventDefault()
+                    console.log(item)
+                    try  {
+                        const response = await fetch(this.action, {
+                            method : 'POST',
+                            body : new FormData(this)
+                        })  
+                        item.remove()
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
+            })
+            
+
+    </script>
+{% endblock end_body %}
+
+
+
+
+
+    
+
+
+
+
+
+

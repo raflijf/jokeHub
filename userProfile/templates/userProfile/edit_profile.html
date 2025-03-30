@@ -1,0 +1,95 @@
+{% extends "hubspace.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block body %}
+    <section class="grid place-items-center h-[120vh] font-poppins text-primary-navyblue">
+        <div class="bg-white shadow-custom-y w-[85%] md:w-[70%] lg:w-[50%] max-w-5xl h-auto">
+            <div class="flex p-3 items-center ">
+                <button href="{% url "user_profile:profil" user_uuid=user.uuid %}" onclick="history.back()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="2A3D66"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>
+                </button>
+                <h1 class="text-xl font-semibold">Edit profil</h1>
+            </div>
+            <br>
+            <div class="flex justify-center">
+                <div> 
+                    <label for="id_profile_image" class="bg-slate-300 flex justify-center w-28  h-28 rounded-full cursor-pointer">
+                        <img src="{{ user.profile_image.url|default:"static/img/profile.png"  }}"  class="w-28 h-28 border-primary-navyblue rounded-full " id="photo_profil">
+                    </label>
+                    <label for="id_profile_image" class="cursor-pointer">
+                        <h1>Ganti foto profil</h1>
+                    </label>
+                </div>
+            </div>
+            <br>
+            <div class="flex justify-center pl-8 pr-8 w-full">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div id="message" class="grid  w-full bg-primary-navyblue/25 h-14 items-center pl-6 pr-6 rounded-lg border-primary-navyblue border-2">
+                            <div class="flex  justify-between  w-full">
+                                <h1 class="font-medium text-sm md:text-lg">{{ message }}</h1>
+                                <button id="closeButton">
+                                    <svg class="w-4 h-4 md:w-6 md:h-6  " xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A3D66"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <br>
+            <form action="" method="POST" class="pl-8 pr-8 grid gap-4" id="form"  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="hidden">
+                    {{ form.profile_image }}
+                </div>
+                {% comment %} <input type="text" class="w-full rounded-lg border-primary-navyblue border-2"> {% endcomment %}
+                <div>
+                    {{ form.username|add_class:"field  w-full rounded-lg border-primary-navyblue border-2" }}
+                    {% if form.username.errors %}
+                        <ul>
+                            {% for error in form.username.errors %}
+                                {% if error == 'A user with that username already exists.' %}
+                                    <li class="text-sm text-red-600 ">• Username sudah digunakan</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div>
+                    {{ form.email|add_class:"field w-full rounded-lg border-primary-navyblue border-2" }}
+                    {% if form.email.errors %}
+                        <ul>
+                            {% for error in form.email.errors %}
+                                {% if error == 'User with this Email already exists.' %}
+                                    <li class="text-sm text-red-600 ">• Email sudah digunakan</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div>
+                    {{ form.full_name|add_class:" field w-full rounded-lg border-primary-navyblue border-2" }}
+                    <h1 class="flex justify-end"><span id="lengthName">0</span>/300</h1>
+                </div>
+                <div>
+                    {{ form.bio|add_class:"field w-full rounded-lg border-primary-navyblue border-2 resize-none" }}
+                    <h1 class="flex justify-end"><span id="lengthBio">0</span>/500</h1>
+                </div>
+                <button type="submit" id="submit" class="bg-primary-navyblue opacity-80 hover:opacity-100 text-white font-medium text-md h-8 rounded-md duration-200">Simpan</button>
+            </form>
+            <a href="{% url "accounts:change_password" %}" class="pl-8 pr-8 text-blue-600 hover:underline">Ubah password</a>
+        </div>
+    </section>
+{% endblock body %}
+
+{% block end_body %}
+    <script src="{% static "userProfile/js/edit_profile.js" %}"></script>
+
+{% endblock end_body %}
+
+
+
+
+
+

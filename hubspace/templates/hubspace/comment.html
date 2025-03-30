@@ -1,0 +1,122 @@
+{% extends "hubspace.html" %}
+{% load templatetags_hubsapce %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block body %}
+    <section class="h-[87vh] px-8">
+        <div class="flex flex-col md:flex-row ">
+            <div class="max-w-3xl md:max-w-xl w-full md:h-[87vh]">
+                <div class="flex flex-col md:justify-between h-full">
+
+                    <div class="border-primary-navyblue border-2  h-52 px-2 py-1 rounded-lg grid grid-flow-row grid-rows-[auto_3fr_1fr]  " >
+                        <div class="flex justify-between text-[9px] md:text-[11px] items-center  pb-2">
+                            <a href="{% url "user_profile:profil" post.user.uuid %}" class="flex items-center gap-2">
+                                <img src="{{ post.user.profile_image.url }}" alt="" class="w-6 h-6 rounded-full">
+                                <span class="text-primary-navyblue  ">
+                                    {% if post.user.id == user.id %}
+                                        Anda
+                                    {% else %}
+                                        {{ post.user.username }}
+                                    {% endif %}
+                                </span>
+                            </a>
+                            <span class="text-primary-navyblue opacity-50 ">{{ post.created_at|time_ago  }}</span>
+                            
+                        </div>
+                        <div class=" ">
+                            <p class="text-[12px]  text-justify">{{ post.content }}</p>
+                        </div>
+                        <div class=" flex items-center border-primary-navyblue/70 border-t-2 justify-between">
+                            <span class="bg-primary-navyblue  text-white text-[11px] rounded-full px-4 py-0.5 text-center ">{{ post.category.name }}</span>
+                            <div class="flex gap-3 ">
+                                <div class="flex items-center gap-0.5">
+                                    {% if post.id in data_likes %}
+                                        <button class="react" value="{% url "hubspace:delete_reaction" 'like' post.id %}" name="delete_like">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M720-120H320v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h218q32 0 56 24t24 56v80q0 7-1.5 15t-4.5 15L794-168q-9 20-30 34t-44 14ZM240-640v520H80v-520h160Z"/></svg>
+                                        </button>
+                                    {% else %}
+                                        <button class = "react" name="like" value = "{% url "hubspace:reaction" 'like' post.id %}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px"  viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z"/></svg>
+                                        </button>
+                                    {% endif %}
+                                    <span class="text-sm">{{ post.id|count_reaction:"like" }}</span>
+                                </div>
+    
+                                <div class="flex gap-0.5 items-center">
+                                    {% if post.id in data_dislike %}
+                                        <button class="react " value="{% url "hubspace:delete_reaction" 'dislike' post.id %}" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M240-840h400v520L360-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 1.5-15t4.5-15l120-282q9-20 30-34t44-14Zm480 520v-520h160v520H720Z"/></svg>
+                                        </button>
+                                    {% else %}
+                                        <button  class = "react" name="like" value = "{% url "hubspace:reaction" 'dislike' post.id %}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z"/></svg>
+                                        </button>
+                                    {% endif %}
+                                    <span class="text-sm">{{ post.id|count_reaction:"dislike" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <form class="border-2 border-primary-navyblue rounded-lg p-2" method="POST">
+                            {% csrf_token %}
+                            {{ commentform.content|add_class:"w-full border-none text-sm h-20 resize-none focus:ring-0" }}
+                            <div class="flex justify-end item" >
+                                <button disabled class="bg-primary-navyblue/85 w-14 flex items-center rounded-md justify-center h-6"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#FFFFFF"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="ml-3  w-full">
+                <div class="flex gap-2 items-center">
+                    <svg   onclick="history.back()"  xmlns="http://mwww.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A3D66" class="hover:bg-primary-navyblue/10 rounded-full "><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                    <span class="text-xl font-semibold">{{ count_commnent }} komentar</span>
+                </div>
+                <br>
+                <div class="overflow-y-scroll h-[78vh]">
+
+                    {% for comment in comments %}
+                        <div class="pb-6 user_comment">
+                            <div class="flex items-center gap-2">
+                                
+                                <a href="{% url "user_profile:profil" comment.user.uuid %}">
+                                    <img src="{{ comment.user.profile_image.url }}" alt="" class="h-8 w-8 rounded-full">
+                                </a>
+                                <a href="{% url "user_profile:profil" comment.user.uuid %}">
+                                    {% if comment.user.id == user.id %}
+                                        <span class="font-medium text-primary-vibrantGreen">Anda</span>
+                                    {% else %} 
+                                        <span class="font-medium">{{ comment.user.username }}</span>
+
+                                    {% endif %}
+                                    
+                                </a>
+                                <span class="text-[12px] opacity-45">{{ comment.created_at|time_ago }}</span>
+                                {% if comment.user.id == user.id %}
+                                    <button  value=" {% url "hubspace:delete_comment" comment.id %} " class="delete_comment text-red-500 hover:text-red-700 text-[12px]">Hapus</button>
+                                {% endif %}
+                            </div>
+                            <div class="ml-10">
+                                <p class="text-[13px]">{{ comment.content }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock body %}
+
+{% block end_body %}
+    <script src="{% static "hubspace/js/comment.js" %}"></script>
+
+{% endblock end_body %}
+
+
+
+
+

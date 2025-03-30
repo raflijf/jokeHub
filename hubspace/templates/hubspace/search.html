@@ -1,0 +1,174 @@
+{% extends "hubspace.html" %}
+{% load static %}
+{% load templatetags_hubsapce %}
+{% load widget_tweaks %}
+
+
+{% block body %}
+    <section class=" px-8">
+        <div class="w-full">
+            <div class="w-full flex justify-center">
+                <form action="{% url "hubspace:search" %}" method="GET"  class="border-2 border-primary-navyblue flex items-center px-2 w-full bg-white max-w-3xl rounded-2xl">                    
+                    <button><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#2A3D66"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg></button>
+                    {{ search.search|add_class:"[appearance:none] border-none w-full focus:ring-0 rounded-2xl"}}
+                  
+                </form>
+            </div>
+            <div class="  ">
+                <div class="flex flex-wrap gap-2 justify-center">
+                    {% for category in categories  %}
+                        <form action="{% url "hubspace:search" %}" method="GET">
+                            <input type="hidden" value="{{ category.name }}" name="category">
+                            <button class="rounded-full   bg-primary-navyblue text-white text-[12px] font-medium px-4 select-none pb-0.5">{{ category.name }}</button>
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                {% if users == 'not exists' %}
+                {% elif users %}
+                    <div class="grid grid-flow-row grid-cols-1  md:grid-cols-2 xl:grid-cols-3  gap-3">
+
+                        {% for q_user in users %} 
+                            {% if q_user.id == user.id %}
+                            {% else %} 
+                                <div class="border-2 border-primary-navyblue p-1 space-y-2 rounded-lg">
+                                    <div class="flex items-center gap-2">
+                                        <a href="{% url "user_profile:profil" q_user.uuid %}"></a>
+                                        <img onclick="location.href = '{% url "user_profile:profil" q_user.uuid %}' " src="{{ q_user.profile_image.url }}" class="cursor-pointer w-14 h-14 rounded-full" alt="">
+                                        <div onclick="location.href = '{% url "user_profile:profil" q_user.uuid %}' " class=" cursor-pointer  flex flex-col text-sm">
+                                            <span class="font-semibold">{{ q_user.username }}</span>
+                                            <span>{{ q_user.full_name }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-around">
+                                        <div class="flex flex-col w-fit">
+                                            <span class="text-center font-semibold text-lg">{{ q_user.id|count_follow }}</span>
+                                            <span class="font-medium text-md ">Pengikut</span>
+                                        </div>
+                                        <div class="flex flex-col w-fit">
+                                            <span class="text-center font-semibold text-lg">{{ q_user.id|count_follow:"followings" }}</span>
+                                            <span class="font-medium text-md ">Mengikuti</span>
+                                        </div>
+                                    </div>
+                                    {% if q_user.id|is_follow:user.id %}
+                                        <button value = "{% url "user_profile:following_cancel" q_user.id %}"   class="action  border-primary-navyblue border-2 hover:bg-primary-navyblue/20 w-full h-7 text-primary-navyblue font-medium rounded-md ">Mengikuti</button>
+                                    {% else %}
+                                        <button value = "{% url "user_profile:follback" q_user.id %}"  class="action bg-primary-navyblue/90 hover:bg-primary-navyblue w-full h-7 text-white font-medium rounded-md ">Ikuti</button>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                    <br>
+
+                {% if  post_categories == 'not exists' %}
+                    <div class="h-[87vh] flex items-center justify-center opacity-50">
+                        <h1>Tidak ditemukan</h1>
+                    </div>
+                {% elif  post_categories %}
+                    
+                    <div class="w-full  grid grid-flow-row grid-cols-1  md:grid-cols-2 xl:grid-cols-3  gap-3">
+                        {% for post in post_categories %}
+                            
+                            <div class="border-primary-navyblue border-2  h-52 px-2 py-1 rounded-lg grid grid-flow-row grid-rows-[auto_3fr_1fr] " >
+                                <div class="flex justify-between text-[9px] md:text-[11px] items-center  pb-2">
+                                    <a href="{% url "user_profile:profil" post.user.uuid %}" class="flex items-center gap-2">
+                                        <img src="{{ post.user.profile_image.url }}" alt="" class="w-6 h-6 rounded-full">
+                                        <span class="text-primary-navyblue  ">
+                                            {% if post.user.id == user.id %}
+                                                Anda
+                                            {% else %}
+                                                {{ post.user.username }}
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                    <span class="text-primary-navyblue opacity-50 ">{{ post.created_at|time_ago  }}</span>
+                                    
+                                </div>
+                                <div class=" ">
+                                    <p class="text-[12px]  text-justify">{{ post.content }}</p>
+                                </div>
+                                <div class=" flex items-center border-primary-navyblue/70 border-t-2 justify-between">
+                                    <span class="bg-primary-navyblue  text-white text-[11px] rounded-full px-4 py-0.5 text-center ">{{ post.category.name }}</span>
+                                    <div class="flex gap-3 ">
+                                        <div class="flex items-center gap-0.5">
+                                            {% if post.id in data_likes %}
+                                                <button class="action" value="{% url "hubspace:delete_reaction" 'like' post.id %}" name="delete_like">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M720-120H320v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h218q32 0 56 24t24 56v80q0 7-1.5 15t-4.5 15L794-168q-9 20-30 34t-44 14ZM240-640v520H80v-520h160Z"/></svg>
+                                                </button>
+                                            {% else %}
+                                                <button class="action" name="like" value = "{% url "hubspace:reaction" 'like' post.id %}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px"  viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z"/></svg>
+                                                </button>
+                                            {% endif %}
+                                            <span class="text-sm">{{ post.id|count_reaction:"like" }}</span>
+                                        </div>
+        
+                                        <div class="flex gap-0.5 items-center">
+                                            {% if post.id in data_dislike %}
+                                                <button class="action" value="{% url "hubspace:delete_reaction" 'dislike' post.id %}" >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M240-840h400v520L360-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 1.5-15t4.5-15l120-282q9-20 30-34t44-14Zm480 520v-520h160v520H720Z"/></svg>
+                                                </button>
+                                            {% else %}
+                                                <button  class="action" name="like" value = "{% url "hubspace:reaction" 'dislike' post.id %}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z"/></svg>
+                                                </button>
+                                            {% endif %}
+                                            <span class="text-sm">{{ post.id|count_reaction:"dislike" }}</span>
+                                        </div>
+        
+                                        <div class="items-center flex gap-0.5">
+                                            <a href="{% url "hubspace:comment" post.uuid %}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M880-80 720-240H160q-33 0-56.5-23.5T80-320v-480q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v720ZM160-320h594l46 45v-525H160v480Zm0 0v-480 480Z"/></svg>
+                                            </a>
+                                            <span class="text-sm">{{ post.id|count_comment }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+            </div>
+        </div>
+    </section>
+{% endblock body %}
+
+{% block end_body %}
+    <script>
+        const form_search = document.querySelector('form')
+        form_search.addEventListener('submit', e => form_search.querySelector('input').value || e.preventDefault())
+
+
+        const action = document.querySelectorAll('.action')
+        let csrftoken = document.querySelector('meta[name="csrf-token"]').content;
+        action.forEach(items => {
+            items.addEventListener('click',async function () {
+                try {
+                    await fetch(this.value, {
+                        method : 'POST',
+                        headers : {
+                            'X-CSRFToken': csrftoken
+                        }
+                    })
+                    location.reload()
+                }
+                catch (error) {
+                    console.error(error)
+                }
+                    
+            })
+        })
+    </script>
+{% endblock end_body %}
+
+
+
+
+
+
+
+

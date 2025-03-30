@@ -1,0 +1,62 @@
+{% extends "hubspace.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block body %}
+    <section class="flex justify-center items-center h-[80vh] ">
+        <div class="bg-white shadow-custom-y  h-auto w-[95%] md:w-[80%] lg:w-[50%] rounded-lg">
+            <form action="{% url "hubspace:create" %}" class="flex justify-center p-4" id="postForm" method="POST">
+                {% csrf_token %}
+                <div class="w-[90%] space-y-3">
+                    {% comment %} <textarea name="" id="" placeholder="Ketik joke kamu disini" class="w-full h-24 text-sm border-2 border-primary-navyblue rounded-lg resize-none"></textarea> {% endcomment %}
+                    {{ form.content|add_class:"w-full h-24 text-[12px] border-2 border-primary-navyblue rounded-lg resize-none focus:border-primary-navyblue " }}
+                    <div class="flex justify-end"><span id="currentWord">0</span>/270</div>
+                    <input type="hidden" id="inputCategory" name="category">
+                    <div class="flex justify-between items-center h-8  ">
+                        <div>
+                            <h1 class="text-primary-navyblue text-md font-semibold">Pilih kategori :</h1>
+                        </div>
+                        <div class="flex">
+                            <input type="text" class="h-5 text-[10px] w-40 border-primary-navyblue border-2 focus:border-primary-navyblue" placeholder="Buat kategori baru" id="UIcategoryField">
+                            <label class="w-fit bg-primary-navyblue h-5 flex items-center px-2" for="addCategoryButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="white"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+                            </label>
+                        </div>
+                    </div>
+                    <span id="errorMessage" class="text-red-600 text-[12px]  hidden">Pilih 1 kategori!</span>
+                    <div class="space-x-2" id="categories-list">
+                        {% for category in list_category %}
+                            <span  data-chosen="false" class="rounded-full  border-2 border-primary-navyblue text-primary-navyblue text-[12px] font-medium px-4 select-none ">{{ category.name }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="flex justify-end gap-4">
+                        <button class="bg-primary-navyblue/85 hover:bg-primary-navyblue text-white font-semibold w-28 rounded-md text-sm py-1" id="submitButton" >Tambahkan</button>
+                    </div>
+                </div>
+            </form>
+            <form action="{% url "hubspace:new_category" %}" method="POST"  id="addCategoryForm">
+                {% csrf_token %}
+                <input type="hidden" id="categoryField" name="name_category">
+                <button id="addCategoryButton" class="hidden">sdsds</button>
+            </form>
+        </div>
+    </section>
+{% endblock body %}
+
+{% block end_body %}
+    <script src="{% static "hubspace/js/create.js" %}"></script>
+
+
+
+{% endblock end_body %}
+
+
+
+
+
+
+
+
+
+
+

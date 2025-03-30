@@ -1,0 +1,99 @@
+{% extends "hubspace.html" %}
+{% load static %}
+{% load templatetags_hubsapce %}
+
+{% block body %}
+    <section class="h-full px-8">
+        
+        {% if messages %}
+            {% for message in messages  %}
+                <div class="flex justify-center" id="message">
+                    <div class=" border-2 rounded-lg w-[85%] border-primary-navyblue h-11 bg-primary-navyblue/20 flex items-center  justify-between px-6">
+                        <div class="flex items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg"  class="h-5 w-5  md:h-7 md:w-7 "  viewBox="0 -960 960 960"  fill="#2A3D66"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
+                            <span class="text-primary-navyblue text-[12px] md:text-sm">jokes berhasil dibuat</span>
+                        </div>
+                        <button onclick="document.getElementById('message').remove()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5  md:h-6 md:w-6 "   viewBox="0 -960 960 960"  fill="#2A3D66"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                        </button>
+                    </div>
+                </div>            
+            {% endfor %}
+        {% endif %}    
+        
+        <div class="w-full  grid grid-flow-row grid-cols-1  md:grid-cols-2 xl:grid-cols-3  gap-3 ">
+            {% for post in posts %}
+            
+                <div class="border-primary-navyblue border-2  h-52 px-2 py-1 rounded-lg grid grid-flow-row grid-rows-[auto_3fr_1fr] " >
+                    <div class="flex justify-between text-[9px] md:text-[11px] items-center  pb-2">
+                        <a href="{% url "user_profile:profil" post.user.uuid %}" class="flex items-center gap-2">
+                            <img src="{{ post.user.profile_image.url }}" alt="" class="w-6 h-6 rounded-full">
+                            <span class="text-primary-navyblue  ">
+                                {% if post.user.id == user.id %}
+                                    Anda
+                                {% else %}
+                                    {{ post.user.username }}
+                                {% endif %}
+                            </span>
+                        </a>
+                        <span class="text-primary-navyblue opacity-50 ">{{ post.created_at|time_ago  }}</span>
+                        
+                    </div>
+                    <div class=" ">
+                        <p class="text-[12px]  text-justify">{{ post.content }}</p>
+                    </div>
+                    <div class=" flex items-center border-primary-navyblue/70 border-t-2 justify-between">
+                        <span class="bg-primary-navyblue  text-white text-[11px] rounded-full px-4 py-0.5 text-center ">{{ post.category.name }}</span>
+                        <div class="flex gap-3 ">
+                            <div class="flex items-center gap-0.5">
+                                {% if post.id in data_likes %}
+                                    <button class="react" value="{% url "hubspace:delete_reaction" 'like' post.id %}" name="delete_like">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M720-120H320v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h218q32 0 56 24t24 56v80q0 7-1.5 15t-4.5 15L794-168q-9 20-30 34t-44 14ZM240-640v520H80v-520h160Z"/></svg>
+                                    </button>
+                                {% else %}
+                                    <button class = "react" name="like" value = "{% url "hubspace:reaction" 'like' post.id %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"  viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z"/></svg>
+                                    </button>
+                                {% endif %}
+                                <span class="text-sm">{{ post.id|count_reaction:"like" }}</span>
+                            </div>
+
+                            <div class="flex gap-0.5 items-center">
+                                {% if post.id in data_dislike %}
+                                    <button class="react " value="{% url "hubspace:delete_reaction" 'dislike' post.id %}" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M240-840h400v520L360-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 1.5-15t4.5-15l120-282q9-20 30-34t44-14Zm480 520v-520h160v520H720Z"/></svg>
+                                    </button>
+                                {% else %}
+                                    <button  class = "react" name="like" value = "{% url "hubspace:reaction" 'dislike' post.id %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z"/></svg>
+                                    </button>
+                                {% endif %}
+                                <span class="text-sm">{{ post.id|count_reaction:"dislike" }}</span>
+                            </div>
+
+                            <div class="items-center flex gap-0.5">
+                                <a href="{% url "hubspace:comment" post.uuid %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M880-80 720-240H160q-33 0-56.5-23.5T80-320v-480q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v720ZM160-320h594l46 45v-525H160v480Zm0 0v-480 480Z"/></svg>
+                                </a>
+                                <span class="text-sm">{{ post.id|count_comment }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock body %}
+
+{% block end_body %}
+    <script src="{% static "hubspace/js/homepage.js" %}">
+    
+
+    </script>
+{% endblock end_body %}
+
+
+
+
+
+

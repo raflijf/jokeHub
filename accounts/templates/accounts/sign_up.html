@@ -1,0 +1,94 @@
+{% extends "account.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block body %}
+    <section class="min-h-screen flex items-center justify-center p-4 text-primary-navyblue">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <div class="flex">
+                <a href="{% url "landing:home" %}" class="text-gray-700 text-lg mb-4 inline-block">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2A3D66"><path d="M384-96 0-480l384-384 68 68-316 316 316 316-68 68Z"/></svg>
+                </a>
+                <span class="text-2xl mt-[-8px] font-semibold">Sign up</span>
+            </div>
+            <div class="text-center my-6">
+                <img src={% static "img/jokehub2-logo.png" %} alt="JokeHub Logo" class="h-10 md:h-16 mx-auto">
+            </div>
+
+            <form class="space-y-4" method="POST" id="signup-form">
+                {% csrf_token %}
+                <div>
+                    {{ form.email|add_class:"field w-full px-3 py-2 border border-gray-300 rounded-md" }}
+                    <li class="alert hidden text-sm text-red-600">• Email tidak valid</li>
+                    {% if form.email.errors %}
+                    <ul>
+                        {% for error in form.email.errors %}
+                            {% if error == 'User with this Email already exists.' %}
+                                <li class="text-sm text-red-600 ">• Email sudah digunakan</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                </div>
+                <div>
+                    {{ form.username|add_class:"field  w-full px-3 py-2 border border-gray-300 rounded-md " }}
+                    <li class="alert hidden text-sm text-red-600">• Username tidak valid</li>
+                    {% if form.username.errors %}
+                        <ul>
+                            {% for error in form.username.errors %}
+                                {% if error == 'A user with that username already exists.' %}
+                                    <li class="text-sm text-red-600 ">• Username sudah digunakan</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="grid items-center gap-2">
+                    <div>
+                        {{ form.password1|add_class:"field input-password w-full px-3 py-2 border border-gray-300 rounded-md" }}
+                        <li class="alert hidden text-sm text-red-600">• Password tidak valid</li>
+                        
+                    </div>
+                    <div class="flex gap-2 ">
+                        <input type="checkbox" name="" id="show-password1" class="show-password  focus:ring-0 focus:outline-none h-3 w-3 shadow-none ring-offset-0">
+                        <label for="show-password1" class="text-[10px] ">Tampilkan password</label>
+                    </div>
+                </div>
+                
+                <div class="grid items-center gap-2">
+                    <div>
+                        {{ form.password2|add_class:"field  input-password  w-full px-3 py-2 border border-gray-300 rounded-md" }}
+                        <li class="alert alert-password hidden text-sm text-red-600">• Konfirmasi password tidak valid</li>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="checkbox" name="" id="show-password2" class=" show-password  focus:ring-0 focus:outline-none h-3 w-3 shadow-none ring-offset-0">
+                        <label for="show-password2" class="text-[10px] ">Tampilkan password</label>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="" id="" class="focus:ring-0 focus:outline-none h-3 w-3 shadow-none ring-offset-0">
+                    <label for="terms" class="text-[10px]">Saya menyetujui syarat dan ketentuan yang berlaku</label>
+                </div>
+                
+                <button  type="submit" class="w-full py-3 bg-green-600 text-white rounded-md hover:bg-green-700">Sign in</button>
+                
+                <p class="text-center text-sm">
+                    Sudah punya akun? <a href="{% url "accounts:signin" %}" class="text-green-600">Login</a>
+                </p>
+            </form>
+        </div>
+    </section>
+{% endblock body %}
+
+{% block end_body %}
+    <script src="{% static "accounts/js/sign_up.js" %}"></script>
+
+
+
+{% endblock end_body %}
+
+
+
+

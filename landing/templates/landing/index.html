@@ -1,0 +1,90 @@
+{% extends "landing.html" %}
+{% load static %}
+
+{% block body %}
+    <section class="h-[100vh] w-[100%]  grid place-items-center">
+        <div>
+            <div class="flex justify-center">
+                <img src={% static "img/jokehub2-logo.png" %} alt="Logo"  class="w-[300px] md:w-[400px]  ">
+            </div>
+            <div class="flex justify-center">
+                <h1 class="font-caveatBrush text-xl md:text-3xl ">Awali harimu dengan jokes yang menarik dan lucu</h1>
+            </div>
+            <div class="flex justify-center">
+                <button onclick="location.href = '{% url "accounts:signup" %}'" class="bg-primary-vibrantGreen text-white w-[40%] h-10  relative top-4 rounded-md hover:bg-green-700 font-medium">Sign up now</button>
+            </div>
+        </div>
+    </section>
+    <section class=" mx-auto  p-8 rounded-lg flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-6">
+        <!-- Gambar -->
+        <img src="{% static "img/colored_trollface.png" %}" alt="Funny Meme" width="1000px" class="hidden md:block  md:w-40 lg:w-[1000px] ">
+    
+        <!-- Konten -->
+        <div class="text-center md:text-left">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-900">Banyak hal yang lucu</h2>
+            <h1 class="text-2xl md:text-3xl font-bold text-[#00A853] mt-2">
+                Temukan berbagai macam lelucon lucu yang siap menghibur Anda..
+            </h1>
+            <p class="text-gray-700 mt-3 text-sm md:text-base">
+                Temukan lelucon yang sesuai dengan selera Anda dan nikmati momen tawa tanpa batas! Di JokeHub, Anda dapat menjelajahi berbagai macam lelucon yang dapat membuat hari Anda lebih ringan. Mulai dari humor kasual hingga yang lebih unik, semuanya tersedia untuk menghibur Anda setiap saat.
+            </p>
+            <div class="mt-5 flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
+                <button class="px-4 py-2 border border-[#2A3D66] text-[#2A3D66] rounded-lg hover:bg-[#2A3D66] hover:text-white transition">
+                    Lihat jokes
+                </button>
+                <button class="px-4 py-2 bg-[#2A3D66] text-white rounded-lg hover:bg-[#1E2D50] transition">
+                   Tambahkan jokesmu
+                </button>
+            </div>
+        </div>
+    </section>
+    <section class="mx-auto px-6 py-12 relative top-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-[#2A3D66] text-center mb-10">
+          Kenapa pilih jokesHub
+          {{ user.is_authenticated}} 
+        </h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <div class="flex items-start space-x-4">
+                    <div class="w-14 h-14 flex-shrink-0 flex items-center justify-center bg-[#2A3D66] text-white rounded-full">
+                        <img src="{% static 'img/lol-logo.png' %}" alt="" width="35px">
+                    </div>
+                    <div>
+                        <h3 class="text-xl md:text-2xl font-bold text-[#00A853]">Lelucon yang Beragam</h3>
+                        <p class="text-gray-700 text-base md:text-lg">
+                            Temukan lelucon yang sesuai dengan selera humor Anda, mulai dari yang ringan hingga yang jenaka.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-14 h-14 flex-shrink-0 flex items-center justify-center bg-[#2A3D66] text-white rounded-full">
+                        <img src="{% static 'img/refresh_white.png' %}" alt="" width="30px">
+                    </div>
+                    <div>
+                        <h3 class="text-xl md:text-2xl font-bold text-[#00A853]">Konten yang Selalu Segar</h3>
+                        <p class="text-gray-700 text-base md:text-lg">
+                            Koleksi lelucon kami diperbarui secara berkala agar tawa terus mengalir.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-14 h-14 flex-shrink-0 flex items-center justify-center bg-[#2A3D66] text-white rounded-full">
+                        <img src="{% static 'img/search_white.png' %}" alt="" width="30px">
+                    </div>
+                    <div>
+                        <h3 class="text-xl md:text-2xl font-bold text-[#00A853]">Opsi Pencarian Bertema</h3>
+                        <p class="text-gray-700 text-base md:text-lg">
+                            Temukan lelucon dengan mudah berdasarkan suasana hati atau tema tertentu.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <img src="{% static 'img/yao-mig.png' %}" alt="Laughing Face" class="hidden md:block  -64 md:w-[500px]">
+            </div>
+        </div>
+    </section>
+    
+    
+    
+{% endblock body %}

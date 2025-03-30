@@ -1,0 +1,92 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    {% block title %}
+        <title>{{ title }}</title>
+    {% endblock title %}    
+    <link href="{% static 'css/dist/styles.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" href={% static "img/jokehub2-logo.png" %}>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    {% block head %}{% endblock head %}
+</head>
+<body class="font-poppins">
+    {% block navbar %}
+        <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white transform -translate-x-full transition-transform duration-300 ease-in-out z-50 md:hidden">
+            <div class="p-4 flex justify-end">
+                <button onclick="toggleSidebar()" class="text-primary-navyblue">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex flex-col gap-4 p-4">
+                <a href="{% url "hubspace:create" %}" class="border-primary-navyblue  bg-primary-navyblue text-white font-medium border-2 border-solid rounded-lg p-2 flex gap-2 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" class="ml-1" width="24px" fill="WHITE"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+                    Buat
+                </a>
+                <a href="{% url "hubspace:homepage" %}" class="border-primary-navyblue text-primary-navyblue font-medium border-2 border-solid rounded-lg p-2 flex gap-2 items-center hover:bg-primary-navyblue hover:bg-opacity-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A3D66" class="ml-1"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
+                    Beranda
+                </a>
+                <a href="{% url "hubspace:search" %}" class="border-primary-navyblue text-primary-navyblue font-medium border-2 border-solid rounded-lg p-2 flex gap-2 items-center hover:bg-primary-navyblue hover:bg-opacity-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A3D66" class="ml-1"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                    Temukan
+                </a>
+            </div>
+        </nav>
+    
+        <!-- Overlay for sidebar -->
+        <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40" onclick="toggleSidebar()"></div>
+    
+        <nav class=" h-20 w-full grid place-items-center z-50">
+            <div class="w-[85%] bg-white  shadow-custom-y h-12 rounded-lg flex items-center fixed">
+                <div class="p-6 flex justify-between w-full items-center" >
+                    <!-- Hamburger menu for mobile -->
+                    <button onclick="toggleSidebar()" class="md:hidden text-primary-navyblue">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Desktop navigation -->
+                    <div class="hidden md:flex gap-3 h-7">
+                        <a href="{% url "hubspace:create" %}" class="border-primary-navyblue bg-primary-navyblue text-white font-medium border-2 border-solid rounded-lg w-32 flex gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" class="ml-1" width="24px" fill="WHITE"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+                            Buat
+                        </a>
+                        <a href="{% url "hubspace:homepage" %}" class="border-primary-navyblue text-primary-navyblue font-medium border-2 border-solid rounded-lg w-32 flex gap-2 hover:bg-primary-navyblue hover:bg-opacity-20">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A3D66" class="ml-1"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
+                            Beranda
+                        </a>
+                        <a href="{% url "hubspace:search" %}" class="border-primary-navyblue text-primary-navyblue font-medium border-2 border-solid rounded-lg w-32 flex gap-2 hover:bg-primary-navyblue hover:bg-opacity-20">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A3D66" class="ml-1"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                            Temukan
+                        </a>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <a href="{% url "user_profile:profil" user_uuid=user.uuid  %}" class="flex gap-2 items-center">
+                            <h4>{{ user.username }}</h4>
+                            <img src="{{ user.profile_image.url }}" alt="" class="w-9 h-9 border-primary-navyblue rounded-full  ">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile Sidebar -->
+    {% endblock navbar %}
+
+    {% block body %}{% endblock body %}
+    
+    {% block main_end_body %}
+        <script src="{% static "js/homespace.js" %}"></script>
+    {% endblock main_end_body %}
+
+    {% block end_body %}{% endblock end_body %}
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends "userProfile/follower.html" %}
+
+{% block list_follower_and_following %}
+    {% for following in followings  %}
+        <div class="following justify-between items-center grid  md:flex hover:bg-slate-100">
+            <a href="{% url "user_profile:profil" following.following.uuid %}" class="flex items-center gap-4">
+                <img src="{{ following.following.profile_image.url }}" alt="" class="h-10 w-10 rounded-full">
+                <span 
+                    {% if not is_own_user and user == following.following %}
+                        class="text-primary-vibrantGreen"
+                    {% endif %}
+                >{{ following.following.username }}</span>
+            </a>
+            <div class=" h-14 flex  gap-5 ">
+                {% if is_own_user %}
+                    <form action="{% url "user_profile:following_cancel" following.following.id %}"  class="h-14  flex items-center">
+                        {% csrf_token %}
+                        <button class=" w-auto  px-3 py-[2px] text-[11px] border-red-600 border-2  rounded-md  text-red-600 hover:bg-red-600 hover:text-white font-normal duration-200">Batal mengikuti</button>
+                    </form>
+                {% endif %}
+            </div>                                    
+        </div>           
+    {% endfor %}
+{% endblock list_follower_and_following %}
