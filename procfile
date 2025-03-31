@@ -1,3 +1,5 @@
 web: gunicorn jokehub.wsgi --log-file - 
 #or works good with external database
 web: python manage.py migrate && gunicorn jokehub.wsgi
+
+web: python manage.py runserver 0.0.0.0:$PORT
