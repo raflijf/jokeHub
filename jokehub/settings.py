@@ -92,13 +92,17 @@ WSGI_APPLICATION = 'jokehub.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME':os.path.join('/tmp', 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
         # 'NAME': 'jokeHub',
         # 'USER' : 'root',
         # 'PASSWORD' : '',
         # 'PORT' : 3306,
         # 'HOST' : 'localhost',
+        'NAME': 'railway',
+        'USER': 'root',
+        'PASSWORD': 'rOgnaWokpcPReItieIHtEbGwSbxaLsRK',
+        'HOST': 'nozomi.proxy.rlwy.net',
+        'PORT': '26317',
     }
 }
 
