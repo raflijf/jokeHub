@@ -3,9 +3,12 @@ nixPkgs = ["python312", "pip", "nodejs_18", "npm"]
 
 [phases.build]
 cmds = [
+    "pip install --upgrade pip",
     "pip install -r requirements.txt",
     "npm install",
-    "npx tailwindcss -i static/src/input.css -o static/css/output.css --minify"
+    "npx tailwindcss -i static/src/input.css -o static/css/output.css --minify",
+    "pip list"
+
 ]
 
 [phases.start]
