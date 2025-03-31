@@ -8,5 +8,5 @@ cmds = [
     "npx tailwindcss -i static/src/input.css -o static/css/output.css --minify"
 ]
 
-[start]
-cmd = "python manage.py runserver 0.0.0.0:$PORT"
+[phases.start]
+cmd = "gunicorn jokehub.wsgi --bind 0.0.0.0:$PORT"
