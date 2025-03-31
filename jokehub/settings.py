@@ -98,11 +98,11 @@ DATABASES = {
         # 'PASSWORD' : '',
         # 'PORT' : 3306,
         # 'HOST' : 'localhost',
-        'NAME': 'railway',
-        'USER': 'root',
-        'PASSWORD': 'rOgnaWokpcPReItieIHtEbGwSbxaLsRK',
-        'HOST': 'nozomi.proxy.rlwy.net',
-        'PORT': '26317',
+        'NAME': os.getenv('DB_NAME', 'railway'),
+        'USER': os.getenv('DB_USER', 'root'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'rOgnaWokpcPReItieIHtEbGwSbxaLsRK'),
+        'HOST': os.getenv('DB_HOST', 'nozomi.proxy.rlwy.net'),
+        'PORT': os.getenv('DB_PORT', '3306'),
     }
 }
 
@@ -149,7 +149,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static') 
 ]
-
+STATICSTORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
