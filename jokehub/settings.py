@@ -95,15 +95,21 @@ WSGI_APPLICATION = 'jokehub.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'jokeHub',
-    #     'USER' : 'root',
-    #     'PASSWORD' : '',
-    #     'PORT' : 3306,
-    #     'HOST' : 'localhost',
-    # }
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': {
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'jokeHub',
+        # 'USER' : 'root',
+        # 'PASSWORD' : '',
+        # 'PORT' : 3306,
+        # 'HOST' : 'localhost',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'joke_hub',
+        'USER' : 'postgres',
+        'PASSWORD' : 'Rafli_123',
+        'PORT' : 5432,
+        'HOST' : 'db.tnsgjvdhquekpzpnhxcr.supabase.co',
+    }
+    # 'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
 
