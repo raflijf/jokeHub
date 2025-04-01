@@ -93,6 +93,12 @@ WSGI_APPLICATION = 'jokehub.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER' : 'postgres',
+        'PASSWORD' : 'cJVMtPlrLTQmDDcRKzvXGXRjoHCZEzcn',
+        'PORT' : 21854,
+        'HOST' : 'crossover.proxy.rlwy.net',
         # 'ENGINE': 'django.db.backends.mysql',
         # 'NAME': 'jokeHub',
         # 'USER' : 'root',
