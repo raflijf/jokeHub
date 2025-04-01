@@ -12,10 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv
-import dj_database_url
 
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -102,14 +99,7 @@ DATABASES = {
         # 'PASSWORD' : '',
         # 'PORT' : 3306,
         # 'HOST' : 'localhost',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'joke_hub',
-        'USER' : 'postgres',
-        'PASSWORD' : 'Rafli_123',
-        'PORT' : 5432,
-        'HOST' : 'db.tnsgjvdhquekpzpnhxcr.supabase.co',
     }
-    # 'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
 
