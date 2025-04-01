@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+import dj_database_url
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-k==xo-oz$+me3(-+m!8-r=&)j1zx3^d71#(_a2j-8ew@_j*0lg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -91,19 +95,15 @@ WSGI_APPLICATION = 'jokehub.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'jokeHub',
-        # 'USER' : 'root',
-        # 'PASSWORD' : '',
-        # 'PORT' : 3306,
-        # 'HOST' : 'localhost',
-        'NAME': os.getenv('DB_NAME', 'railway'),
-        'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'rOgnaWokpcPReItieIHtEbGwSbxaLsRK'),
-        'HOST': os.getenv('DB_HOST', 'nozomi.proxy.rlwy.net'),
-        'PORT': os.getenv('DB_PORT', '3306'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'jokeHub',
+    #     'USER' : 'root',
+    #     'PASSWORD' : '',
+    #     'PORT' : 3306,
+    #     'HOST' : 'localhost',
+    # }
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
 
