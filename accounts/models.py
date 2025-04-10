@@ -11,7 +11,7 @@ class User(AbstractUser) :
     first_name = None
     last_name = None
     full_name = models.CharField(max_length=300, blank=True)
-    profile_image = models.ImageField(upload_to='profile_image/',  default='profile_image\profile.png')
+    profile_image = models.ImageField(upload_to='profile_image/',  default='https://res.cloudinary.com/dg0m3qgxt/image/upload/v1744208107/whkig5d0oafqfowlm2tw.png')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
