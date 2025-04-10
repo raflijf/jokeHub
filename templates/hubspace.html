@@ -71,7 +71,7 @@
                     <div class="flex gap-2 items-center">
                         <a href="{% url "user_profile:profil" user_uuid=user.uuid  %}" class="flex gap-2 items-center">
                             <h4>{{ user.username }}</h4>
-                            <img src="{{ user.profile_image.url }}" alt="" class="w-9 h-9 border-primary-navyblue rounded-full  ">
+                            <img src="{{ user.url_image }}" alt="" class="w-9 h-9 border-primary-navyblue rounded-full  ">
                         </a>
                     </div>
                 </div>
